@@ -39,7 +39,7 @@ router.use(function (req, res, next) {
 
 //api health
 router.get('/', function (req, res) {
-    res.status(200).json({message: 'User Street Holes Reporting is API running !', Status: "green"});
+    res.status(200).json({message: 'User Street Holes Reporting is API running ! Test DevOps', Status: "green"});
 });
 
 function replacer(key, value) {
