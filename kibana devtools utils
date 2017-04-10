@@ -1,0 +1,78 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET persons/person/_search
+
+DELETE /persons
+
+POST /persons/person/_bulk
+{ "index": { "_id": 1 }}
+{ "Id":"1","firstName": "Samet","lastName":"Oussema" }
+{ "index": { "_id": 2 }}
+{ "Id":"1","firstName": "Meth","lastName":"Alex" }
+{ "index": { "_id": 3 }}
+{ "Id":"1","firstName": "Abbes","lastName":"Yassine" }
+{ "index": { "_id": 4 }}
+{ "Id":"1","firstName": "Mallek","lastName":"Chaker" }
+{ "index": { "_id": 5 }}
+{ "Id":"1","firstName": "Saadallah","lastName":"Nour" }
+{ "index": { "_id": 4 }}
+{ "Id":"1","firstName": "Bhamouda","lastName":"Khalil" }
+
+PUT /persons
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "trigrams_filter": {
+                    "type":     "ngram",
+                    "min_gram": 3,
+                    "max_gram": 4
+                }
+            },
+            "analyzer": {
+                "trigrams": {
+                    "type":      "custom",
+                    "tokenizer": "standard",
+                    "filter":   [
+                        "lowercase",
+                        "trigrams_filter"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "person": {
+            "properties": {
+                "firstName": {
+                    "type":     "string",
+                    "analyzer": "trigrams"
+                },
+                "lastName": {
+                    "type":     "string"
+                },
+                "Id": {
+                    "type":     "long"
+                }
+            }
+        }
+    }
+}
+
+GET /persons/_settings
+
+GET /persons/_mappings
+
+GET persons/person/_search
+{
+  "query": {
+    "match": {
+      "firstName": "met"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Street Holes Reports API",
+  "version": "1.0.0",
+  "description": "API for logging Street Holes Reports",
+  "author": "Samet Oussema <sametoussema@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "body-parser": "~1.15.2",
+    "mongoose": "~4.6.6"
+  }
+}
