@@ -1,5 +1,4 @@
 FROM openjdk:8-jre
-
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
@@ -16,7 +15,6 @@ RUN set -x \
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
 
-
 #### install ELasticsearch
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
 # https://www.elastic.co/guide/en/elasticsearch/reference/5.0/deb.html
@@ -25,7 +23,7 @@ RUN set -x \
 	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
 
 ENV ELASTICSEARCH_VERSION 5.3.0
-a
+
 RUN set -x \
   # don't allow the package to install its sysctl file (causes the install to fail)
   # Failed to write '262144' to '/proc/sys/vm/max_map_count': Read-only file system
