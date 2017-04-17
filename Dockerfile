@@ -68,8 +68,7 @@ RUN mkdir -p /usr/src/app
 #RUN npm install
 
 # Bundle app source
-COPY ./ /usr/src/a
-pp/
+COPY ./ /usr/src/app
 
 #APP BINDING PORT
 EXPOSE 9200 9300 8080
