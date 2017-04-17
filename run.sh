@@ -11,7 +11,7 @@ echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
 
 # allow for memlock
-ulimit -l unlimited
+#ulimit -l unlimited
 
 #run filebeat
 #/etc/init.d/filebeat start
