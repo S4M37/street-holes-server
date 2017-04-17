@@ -8,8 +8,8 @@ var UserStreetHoleReport = new Schema({
         lon: Number
     },
     locality: String,
-    address: String
-
+    address: String,
+    timestamp: String
 });
 
 module.exports = mongoose.model('UserStreetHoleReport', UserStreetHoleReport);
