@@ -7,21 +7,34 @@ GET _search
 
 GET persons/person/_search
 
+GET _cat/indices
+
+GET filebeat-2017.04.10/_search
+{
+  "query": {
+    "match": {
+      "clientId": "12"
+    }
+  }
+}
+
+GET filebeat-2017.04.10
+
+DELETE filebeat-2017.04.10
+
 DELETE /persons
 
-POST /persons/person/_bulk
+DELETE /smart-parking
+
+POST /smart-parking/parking/_bulk
 { "index": { "_id": 1 }}
-{ "Id":"1","firstName": "Samet","lastName":"Oussema" }
+{ "Id":"1","parking": "Parking 1","address":"Centre Urbain Nord"}
 { "index": { "_id": 2 }}
-{ "Id":"1","firstName": "Meth","lastName":"Alex" }
+{ "Id":"2","parking": "Parking 2","address":"Centre Urbain Nord"
+   }
 { "index": { "_id": 3 }}
-{ "Id":"1","firstName": "Abbes","lastName":"Yassine" }
-{ "index": { "_id": 4 }}
-{ "Id":"1","firstName": "Mallek","lastName":"Chaker" }
-{ "index": { "_id": 5 }}
-{ "Id":"1","firstName": "Saadallah","lastName":"Nour" }
-{ "index": { "_id": 4 }}
-{ "Id":"1","firstName": "Bhamouda","lastName":"Khalil" }
+{ "Id":"3","parking": "Parking 3","address":"Centre Urbain Nord"}
+
 
 PUT /persons
 {
@@ -76,3 +89,273 @@ GET persons/person/_search
     }
   }
 }
+
+PUT /smart-parking
+
+DELETE /smart-parking
+
+PUT smart-parking/_mapping/parking
+{
+ "properties": {
+ "@timestamp": {
+ "type": "date",
+ "format": "strict_date_optional_time||epoch_millis"
+ },
+ "@version": {
+ "type": "text"
+ },
+ "Parkingname": {
+ "type": "text"
+ },
+ "ParkingId": {
+ "type": "long"
+ },
+ "Address":{
+ "type": "text"
+ },
+ "Latitude" : {
+ "type": "float"
+ },
+ "Longitude" : {
+ "type": "float"
+ },
+ "location": {
+ "type": "geo_point"
+ }
+ }
+}
+
+
+POST /smart-parking/parking/_bulk
+{ "index": { "_id": 1 }}
+{ "ParkingId":"1","Parkingname": "Parking 1","Address":"Centre Urbain Nord","location" : {
+  "lat":30.12547,
+  "lon":10.21547
+},"Latitude":30.12547,"Longitude":10.21547}
+
+DELETE filebeat-2017.04.11
+
+GET filebeat-*/_search
+
+PUT street-holes
+{
+    "mappings": {
+        "user-reports": {
+            "properties": {
+                "location": {
+                    "type": "geo_point"
+                },
+                "clientId":{
+                  "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+                },
+                "address":{
+                  "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+                },
+                "locality":{
+                  "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+                },
+                "timestamp":{
+                  "type": "date"
+                }
+            }
+        }
+    }
+}
+
+GET street-holes/user-reports/_search
+GET street-holes/user-reports/_mapping
+DELETE street-holes/user-reports/
+
+GET street-holes/user-reports/_search
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance" : {
+                    "distance" : "1km",
+                    "location" : {
+                        "lat" : 36.889883,
+                        "lon" : 10.172931
+                    }
+                }
+            }
+        }
+    }
+}
+
+PUT smart-parking
+{
+    "mappings": {
+        "parking-item": {
+            "properties": {
+                "location": {
+                    "type": "geo_point"
+                },
+                "address":{
+                  "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+                },
+                "locality":{
+                  "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+                },
+                "itemId":{
+                  "type":"text"
+                }
+            }
+        }
+    }
+}
+POST smart-parking/parking-item/AVvVaqInKab0uJx1zwtl
+{
+  "address": "Cntre Urbain Nord, Tunis",
+          "itemId": "i82",
+          "locality": "Centre Urbain Nord",
+          "location": {
+            "lat": 36.847377,
+            "lon": 10.1613423
+          }
+}
+GET smart-parking/parking-item/_search
+
+GET smart-parking/parking-item/_search
+{
+"query": {
+  "match": {
+    "itemId": "i2"
+  }
+}
+}
+
+GET smart-parking/parking-item/_search
+
+POST smart-parking/parking-item/AVvVbLApKab0uJx1zwwE
+{
+ "address": "El Manar 1, Tunis",
+          "itemId": "i2",
+          "locality": "El Manar 1",
+          "location": {
+            "lat": 36.831096,
+            "lon": 10.14989
+          }
+}
+GET smart-parking/parking-item/_search
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_distance" : {
+                    "distance" : "0.5km",
+                    "location" : {
+                        "lat" : 36.832126,
+                        "lon" : 10.152497
+                    }
+                }
+            }
+        }
+    }
+}
+
+GET smart-parking/parking-item/_mapping
+
+DELETE smart-parking
+
+#Film Store
+DELETE /film-store
+GET film-store/_mapping
+GET film-store/_settings
+PUT /film-store
+{
+    "settings": {
+        "analysis": {
+            "filter": {
+                "trigrams_filter": {
+                    "type":     "ngram",
+                    "min_gram": 2,
+                    "max_gram": 3
+                }
+            },
+            "analyzer": {
+                "trigrams": {
+                    "type":      "custom",
+                    "tokenizer": "standard",
+                    "filter":   [
+                        "lowercase",
+                        "trigrams_filter"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "actor": {
+            "properties": {
+                "name": {
+                    "type":     "text",
+                    "analyzer": "trigrams"
+                },
+                "id": {
+                    "type":     "text"
+                }
+            }
+        },"movie": {
+            "properties": {
+                "title": {
+                    "type":     "text",
+                    "analyzer": "trigrams"
+                },
+                "id": {
+                    "type":     "text"
+                }
+            }
+        }
+    }
+}
+
+GET film-store/movie/_search
+DELETE film-store/movie/AVvbKKJBeYccczqQ8qfU
+GET film-store/actor/_search
+{
+  "query": {
+    "match": {
+      "name": "sp"
+    }
+  }
+}
+
+GET _cat/indices
+
