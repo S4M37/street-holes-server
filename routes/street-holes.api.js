@@ -43,11 +43,11 @@ router.route('/user-street-hole-report')
         });
 
 
-        fs.appendFile('./public/user-street-hole-report.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
+        fs.appendFile('./public/user-street-holes-report.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('file user-street-hole-report was modified !');
+                console.log('file user-street-holes-report was modified !');
             }
         });
 
