@@ -4,31 +4,18 @@ var router = express.Router();
 //filestream API: for managing files
 var fs = require('fs');
 
-var UserStreetHoleReport=require('../models/UserStreetHoleReport');
+var UserStreetHoleReport = require('../models/UserStreetHoleReport');
 
 function replacer(key, value) {
-    if (key == "_id") return undefined;
+    if (key === "_id") return undefined;
     else return value;
 }
 
 /*
  * ElasticSearch Client
  */
-var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({
-    host: 'http://elastic:changeme@localhost:9200',
-    log: 'trace'
-});
-
-client.ping({
-    requestTimeout: 1000,
-}, function (error) {
-    if (error) {
-        console.error('Elasticsearch cluster is down!');
-    } else {
-        console.log('Elasticsearch cluster is up');
-    }
-});
+var elasticClient = require('../lib/elastic');
+var client = elasticClient.ElasticClient().getInstance();
 
 //api health
 router.get('/', function (req, res) {
@@ -45,17 +32,18 @@ router.route('/user-street-hole-report')
         var userStreetHoleReport = new UserStreetHoleReport();
         // set the introWebUserLog atttributes (comes from the request)
         userStreetHoleReport = req.body;
-        userStreetHoleReport.timestamp=new Date();
+        userStreetHoleReport.timestamp = new Date();
 
         client.index({
-            index: 'user-street-holes',
+            index: 'street-holes',
             id: makeId(),
             type: 'user-reports',
             body: userStreetHoleReport
-        },function(err,resp,status) {
+        }, function (err, resp, status) {
             console.log(resp);
         });
 
+        /*
         fs.appendFile('./public/user-street-hole-report.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
             if (err) {
                 console.log(err);
@@ -63,7 +51,7 @@ router.route('/user-street-hole-report')
                 console.log('file user-street-hole-report was modified !');
             }
         });
-
+        */
         res.status(200).json({
             message: 'UserStreetHoleReport instance was created successfuly',
             UserStreetHoleReport: userStreetHoleReport

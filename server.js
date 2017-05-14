@@ -1,8 +1,9 @@
-const PORT = process.env.PORT || '4000';
+const PORT = process.env.PORT || '3000';
 const express = require('express');
 const app = express();
 const http = require('http');
 const api = require('./routes/street-holes.api');
+const elasticApi = require('./routes/elastic.api');
 
 //Model IntroWebUserLog
 var UserStreetHoleReport = require('./models/UserStreetHoleReport');
@@ -38,6 +39,7 @@ app.use(function (req, res, next) {
 // REGISTER OUR ROUTES -------------------------------
 
 app.use('/api', api);
+app.use('/api/elastic', elasticApi);
 app.set('port', PORT);
 
 /**

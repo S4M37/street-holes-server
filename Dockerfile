@@ -15,44 +15,13 @@ RUN set -x \
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4
 
 
-#### install ELasticsearch
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html
-# https://www.elastic.co/guide/en/elasticsearch/reference/5.0/deb.html
-RUN set -x \
-  && apt-get update && apt-get install -y --no-install-recommends apt-transport-https sudo && rm -rf /var/lib/apt/lists/* \
-	&& echo 'deb https://artifacts.elastic.co/packages/5.x/apt stable main' > /etc/apt/sources.list.d/elasticsearch.list
-
-ENV ELASTICSEARCH_VERSION 5.3.0
-
-RUN set -x \
-  # don't allow the package to install its sysctl file (causes the install to fail)
-  # Failed to write '262144' to '/proc/sys/vm/max_map_count': Read-only file system
-  && dpkg-divert --rename /usr/lib/sysctl.d/elasticsearch.conf \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends elasticsearch=$ELASTICSEARCH_VERSION \
-  && rm -rf /var/lib/apt/lists/*
-
-ENV PATH /usr/share/elasticsearch/bin:$PATH
-
-WORKDIR /usr/share/elasticsearch
-
-RUN set -ex \
-  && for path in \
-    ./data \
-    ./logs \
-    ./config \
-    ./config/scripts \
-  ; do \
-    mkdir -p "$path"; \
-    chown -R elasticsearch:elasticsearch "$path"; \
-  done
-
-COPY ./ElasticSearch/config ./config
-
-VOLUME /usr/share/elasticsearch/data
+### install filebeat
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.0.0-amd64.deb
+RUN dpkg -i filebeat-5.3.0-amd64.deb
 
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack
+COPY FileBeat/filebeat.template.json FileBeat/filebeat.yml /etc/filebeat/
+
 
 ##ServerSide NodeJs
 
@@ -68,21 +37,17 @@ RUN mkdir -p /usr/src/app
 #RUN npm install
 
 # Bundle app source
-COPY ./ /usr/src/app
+COPY . /usr/src/app
 
 #APP BINDING PORT
-EXPOSE 9200 9300 8080
+EXPOSE 4000
 
 #ENTRYPOINT ["/docker-entrypoint.sh"]
 
 WORKDIR /usr/src/app
 
 
-COPY ./run.sh /
-
-RUN chmod +x /run.sh
-
-CMD ["/run.sh"]
+#CMD [ "npm", "start" ]
 
 #RUN the result dockerized image with
 #docker run --privileged --name [container-name] -p 9200:9200 -p 9300:9300 -p 8080:8080 [image-tag]
