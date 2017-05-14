@@ -16,8 +16,8 @@ RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC85485
 
 
 ### install filebeat
-RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.0.0-amd64.deb
-RUN dpkg -i filebeat-5.3.0-amd64.deb
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.4.0-amd64.deb
+RUN dpkg -i filebeat-5.4.0-amd64.deb
 
 
 COPY FileBeat/filebeat.template.json FileBeat/filebeat.yml /etc/filebeat/
