@@ -18,7 +18,7 @@ filebeat.prospectors:
 - input_type: log
 
   paths:
-    - /usr/src/app/public/user-street-holes-report.log
+    - /usr/src/app/public/user-street-holes-report
   json.keys_under_root: true
   document_type: /user-street-holes-report
 
