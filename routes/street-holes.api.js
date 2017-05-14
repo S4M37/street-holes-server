@@ -36,14 +36,13 @@ router.route('/user-street-hole-report')
 
         client.index({
             index: 'street-holes',
-            id: makeId(),
             type: 'user-reports',
             body: userStreetHoleReport
         }, function (err, resp, status) {
             console.log(resp);
         });
 
-        /*
+
         fs.appendFile('./public/user-street-hole-report.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
             if (err) {
                 console.log(err);
@@ -51,7 +50,7 @@ router.route('/user-street-hole-report')
                 console.log('file user-street-hole-report was modified !');
             }
         });
-        */
+
         res.status(200).json({
             message: 'UserStreetHoleReport instance was created successfuly',
             UserStreetHoleReport: userStreetHoleReport
