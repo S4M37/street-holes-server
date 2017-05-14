@@ -46,8 +46,7 @@ EXPOSE 4000
 
 WORKDIR /usr/src/app
 
-
-#CMD [ "npm", "start" ]
+CMD [ "npm", "start" ]
 
 #RUN the result dockerized image with
 #docker run --privileged --name [container-name] -p 9200:9200 -p 9300:9300 -p 8080:8080 [image-tag]
