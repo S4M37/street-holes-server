@@ -80,7 +80,7 @@ filebeat.prospectors:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["ec2-52-210-85-77.eu-west-1.compute.amazonaws.com:9200"]
+  hosts: ["ec2-52-214-85-123.eu-west-1.compute.amazonaws.com:9200"]
 
   template.name: "filebeat"
   template.path: "filebeat.template.json"

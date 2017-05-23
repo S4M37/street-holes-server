@@ -35,16 +35,42 @@ router.route('/user-street-hole-report')
         userStreetHoleReport = req.body;
         userStreetHoleReport.timestamp = new Date();
 
-        client.index({
+        client.search({
             index: 'street-holes',
-            type: 'user-reports',
-            body: userStreetHoleReport
-        }, function (err, resp, status) {
-            console.log(resp);
+            type: 'holes',
+            body: {
+                "query": {
+                    "bool": {
+                        "must": {"match_all": {}},
+                        "filter": {
+                            "geo_distance": {
+                                "distance": "0.01km",
+                                "location": {
+                                    "lat": userStreetHoleReport.location.lat,
+                                    "lon": userStreetHoleReport.location.lon
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }).then(function (resp) {
+            var hits = resp.hits.hits;
+            if (hits.length === 0) {
+                client.index({
+                    index: 'street-holes',
+                    type: 'holes',
+                    body: userStreetHoleReport
+                }, function (err, resp, status) {
+                    console.log(resp);
+                });
+            }
+        }, function (err) {
+            console.trace(err.message);
         });
 
 
-        mkdirp('./public', function(err) {
+        mkdirp('./public', function (err) {
         });
         fs.appendFile('./public/user-street-holes-report.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
             if (err) {

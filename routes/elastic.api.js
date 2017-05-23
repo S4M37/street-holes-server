@@ -30,7 +30,7 @@ router.route('/holes/nearby')
         // create a new instance of the IntroWebUserLog model
         client.search({
             index: 'street-holes',
-            type: 'report',
+            type: 'holes',
             body: {
                 "query": {
                     "bool": {
