@@ -4,6 +4,7 @@ const app = express();
 const http = require('http');
 const api = require('./routes/street-holes.api');
 const elasticApi = require('./routes/elastic.api');
+const CFApi = require('./routes/continous-feedback.api');
 
 //Model IntroWebUserLog
 var UserStreetHoleReport = require('./models/UserStreetHoleReport');
@@ -40,6 +41,7 @@ app.use(function (req, res, next) {
 
 app.use('/api', api);
 app.use('/api/elastic', elasticApi);
+app.use('/api/track', CFApi);
 app.set('port', PORT);
 
 /**
