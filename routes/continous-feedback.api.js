@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
     res.status(200).json({message: 'Continuous Feedback API is running !', Status: "green"});
 });
 //create Log line comming from IntroMobilePage::Web-User
-router.route('/track/broadcast')
+router.route('/broadcast')
 
 // create a IntroWebUserLog (accessed at POST http://localhost:8080/api/introwebuserlogs)
     .post(function (req, res) {
