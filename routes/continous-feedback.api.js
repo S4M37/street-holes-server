@@ -32,7 +32,7 @@ router.route('/broadcast')
         });
         res.status(200).json({
             message: 'TrackUserBroadcast instance was created successfuly',
-            UserStreetHoleReport: userStreetHoleReport
+            UserStreetHoleReport: req.body
         });
     });
 
