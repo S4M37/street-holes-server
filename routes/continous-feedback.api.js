@@ -30,6 +30,10 @@ router.route('/broadcast')
                 console.log('file track-user-broadcast was modified !');
             }
         });
+        res.status(200).json({
+            message: 'TrackUserBroadcast instance was created successfuly',
+            UserStreetHoleReport: userStreetHoleReport
+        });
     });
 
 module.exports = router;
