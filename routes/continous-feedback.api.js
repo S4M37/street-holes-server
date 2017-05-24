@@ -22,7 +22,7 @@ router.route('/track/broadcast')
 
         mkdirp('./public', function (err) {
         });
-        fs.appendFile('./public/track-user-broadcast.log', JSON.stringify(userStreetHoleReport, replacer) + '\n', function (err) {
+        fs.appendFile('./public/track-user-broadcast.log', JSON.stringify(req.body) + '\n', function (err) {
             if (err) {
                 console.log(err);
             } else {
