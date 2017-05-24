@@ -44,7 +44,7 @@ router.route('/user-street-hole-report')
                         "must": {"match_all": {}},
                         "filter": {
                             "geo_distance": {
-                                "distance": "0.01km",
+                                "distance": "0.05km",
                                 "location": {
                                     "lat": userStreetHoleReport.location.lat,
                                     "lon": userStreetHoleReport.location.lon
