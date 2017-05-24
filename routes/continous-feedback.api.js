@@ -1,6 +1,8 @@
 const express = require('express');
 // get an instance of the express Router
 var router = express.Router();
+var fs = require('fs');
+var mkdirp = require('mkdirp');
 
 /*
  * ElasticSearch Client
@@ -19,7 +21,6 @@ router.route('/broadcast')
 // create a IntroWebUserLog (accessed at POST http://localhost:8080/api/introwebuserlogs)
     .post(function (req, res) {
         // create a new instance of the IntroWebUserLog model
-
         mkdirp('./public', function (err) {
         });
         fs.appendFile('./public/track-user-broadcast.log', JSON.stringify(req.body) + '\n', function (err) {
